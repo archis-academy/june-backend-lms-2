@@ -117,8 +117,14 @@ public class Main {
         }
 
     }
-    static void checkOutBook(String ISBN,String userID) {
+    static void checkOutBook() {
         Date date = new Date();
+
+        System.out.print("\nEnter your ID ");
+        String userID = scanner.nextLine();
+
+        System.out.print("Enter the ISBN of the book you want to check out: ");
+        String ISBN = scanner.nextLine();
 
         boolean bookFound = false;
 
