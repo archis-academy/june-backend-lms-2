@@ -1,4 +1,6 @@
 import org.w3c.dom.ls.LSOutput;
+
+import java.util.Date;
 import java.util.Scanner;
 
 
@@ -115,5 +117,37 @@ public class Main {
         }
 
     }
+    static void checkOutBook() {
+        Date date = new Date();
+
+        System.out.print("\nEnter your ID ");
+        String userID = scanner.nextLine();
+
+        System.out.print("Enter the ISBN of the book you want to check out: ");
+        String ISBN = scanner.nextLine();
+
+        boolean bookFound = false;
+
+        for (int i = 0; i < bookQuantity; i++) {
+            if (books[i][0].equalsIgnoreCase(ISBN)) {
+                bookFound = true;
+
+                transactions[transactionQuantity][0] = books[i][0];
+                transactions[transactionQuantity][1]=userID;
+                transactions[transactionQuantity][2] = date.toString();
+                transactionQuantity++;
+
+                removeBook(books[i][0], books[i][1]);
+
+                System.out.println(userID + ", you have successfully checked out the book \"" + ISBN + "\".");
+                break;
+            }
+        }
+
+        if (!bookFound) {
+            System.out.println("Book \"" + ISBN + "\" not found in the library.");
+        }
+    }
+
 
 }
