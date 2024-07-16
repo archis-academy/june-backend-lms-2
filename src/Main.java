@@ -275,6 +275,9 @@ public class Main {
             case "requestBook":
                 System.out.println("Your specific desired book is succesfully requested.");
                 break;
+            case "returnBook":
+                System.out.println("Book returned to the library succesfully.");
+                break;
             default:
                 System.out.println("Succesfull Operation.");
         }
