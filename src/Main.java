@@ -2,9 +2,8 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.sql.SQLOutput;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
+import java.time.LocalDate;
 
 public class Main {
 
@@ -17,9 +16,66 @@ public class Main {
     static int transactionQuantity = 0;
     static Scanner scanner = new Scanner(System.in);
     static LocalDate currentDate = LocalDate.now();
-    static DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     public static void main(String[] args) {
+
+
+    }
+
+
+    static void searchBooks(String input,String bookTitle,String bookAuthor,String bookISBN) {
+        if (input.toLowerCase().equals("title")) {
+            for (int i = 0; i < bookQuantity; i++) {
+                if (books[i][1].equals(bookTitle)){
+                    System.out.println("Here is the book you are looking for : ");
+                    for (int j = 0; j < 4; j++) {
+                        System.out.print("\n" + books[i][j]);
+                    }
+                }
+            }
+        }
+        else if (input.toLowerCase().equals("author")) {
+            for (int i = 0; i < bookQuantity; i++) {
+                if (books[i][2].equals(bookAuthor)){
+                    System.out.println("Here is the book you are looking for : ");
+                    for (int j = 0; j < 4; j++) {
+                        System.out.print("\n" + books[i][j]);
+                    }
+                }
+            }
+        }
+        else if (input.toUpperCase().equals("ISBN") || input.toUpperCase().equals("İSBN") ) {
+            for (int i = 0; i < bookQuantity; i++) {
+                if (books[i][0].equals(bookISBN)){
+                    System.out.println("Here is the book you are looking for : ");
+                    for (int j = 0; j < 4; j++) {
+                        System.out.print("\n" + books[i][j]);
+                    }
+                }
+            }
+        }
+        else {
+            System.out.println("We cannot find any books with this method, please try again.");
+        }
+    }
+
+
+    static boolean isBookAvailable(String ISBN) {
+        for (int i = 0; i < bookQuantity; i++) {
+            if (books[i][0].equals(ISBN)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static boolean isBookAvailableForReturning(String ISBN) {
+        for (int i = 0; i < transactionQuantity; i++) {
+            if (transactions[i][0].equals(ISBN)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static void extendBooksArrayOnAddition(String newBookISBN, String newBookTitle, String newBookAuthor, String newBookAdditionalInformation) {
@@ -36,6 +92,29 @@ public class Main {
         books = additionalBooks;
 
     }
+
+    static void returnBook(String bookISBN,String bookName, String bookAuthor, String bookINFO, String userID) {
+        Boolean bookFound = false;
+
+        for (int i = 0; i < bookQuantity; i++) {
+            if (books[i][0].equals(bookISBN)){
+                System.out.println("This book has already been returned");
+                bookFound = true;
+            }
+        }
+        if (!bookFound) {
+            LocalDate returnDate = LocalDate.now();
+
+            transactions[transactionQuantity][0] = bookISBN;
+            transactions[transactionQuantity][1] = userID;
+            transactions[transactionQuantity][2] = returnDate.toString();
+            transactionQuantity++;
+
+            addBook(bookISBN,bookName,bookAuthor,bookINFO);
+            System.out.println("Return is succesfull");
+        }
+    }
+
 
 
     static int countTotalBooks() {
@@ -129,7 +208,6 @@ public class Main {
             bookQuantity++;
         } else {
             System.out.println("\nOur shelves are full, so that we can't add the new one...");
-
         }
 
     }
@@ -221,20 +299,20 @@ public class Main {
         }
 
         System.out.println("\nUsers actively registered on the system: " + userQuantity);
-        for(int i = 0; i < userQuantity; i++){
+        for (int i = 0; i < userQuantity; i++) {
             System.out.println("\nName: " + users[i][1]);
             System.out.println("ID Number: " + users[i][0]);
             System.out.println("Email: " + users[i][2]);
         }
 
         System.out.println("\nCurrently active transactions on the system: " + transactionQuantity);
-        for(int i = 0; i < transactionQuantity; i++){
+        for (int i = 0; i < transactionQuantity; i++) {
             System.out.println("\nUser ID: " + transactions[i][1]);
             System.out.println("Book ISBN: " + transactions[i][0]);
             System.out.println("Transaction Date: " + transactions[i][2]);
         }
     }
-
+  
     static void reserveBook(String bookISBN, String userID, int reservationDuration){
 
         boolean isBookAvailable = false;
@@ -274,4 +352,6 @@ public class Main {
             System.out.println("Reservation failed, please try again.");
         }
     }
+
+
 }
