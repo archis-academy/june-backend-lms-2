@@ -259,6 +259,12 @@ public class Main {
 
             if(userPickUpDate.isBefore(pickUpDeadline) || userPickUpDate.isEqual(pickUpDeadline)){
                 System.out.println("You have picked up the book on time.");
+                if(transactionQuantity < INDEX){
+                    transactions[transactionQuantity][0] = bookISBN;
+                    transactions[transactionQuantity][1] = userID;
+                    transactions[transactionQuantity][2] = currentDate.toString();
+                    transactionQuantity++;
+                }
             }
             else{
                 System.out.println("You failed to pick up the book on time, Reservation failed.");
